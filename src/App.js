@@ -5,7 +5,7 @@ const Pizza = (props) => {
   ]);
 };
 
-const app = () => {
+const App = () => {
   return React.createElement("div", {}, [
     React.createElement("h1", {}, "Padre Gino's"),
     React.createElement(Pizza, {
@@ -33,4 +33,4 @@ const app = () => {
 
 const container = document.getElementById("root");
 const root = ReactDOM.createRoot(container);
-root.render(React.createElement(app));
+root.render(React.createElement(App));
