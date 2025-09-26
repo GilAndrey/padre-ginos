@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "format": "prettier --write \"src/**/*.{js, jsx, ts, tsx, css}\"",
     "lint": "eslint",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,6 +15,7 @@
     "url": "git+https://github.com/GilAndrey/padre-ginos.git"
   },
   "keywords": [],
+  "type": "module",
   "author": "",
   "license": "ISC",
   "bugs": {
@@ -20,9 +24,15 @@
   "homepage": "https://github.com/GilAndrey/padre-ginos#readme",
   "description": "",
   "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
     "eslint": "^9.9.1",
     "eslint-config-prettier": "^9.1.0",
     "globals": "^15.9.0",
-    "prettier": "^3.6.2"
+    "prettier": "^3.6.2",
+    "vite": "^5.4.2"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   }
 }

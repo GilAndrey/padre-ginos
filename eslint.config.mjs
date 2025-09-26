@@ -6,17 +6,10 @@ import prettier from "eslint-config-prettier";
 export default [
   js.configs.recommended,
   {
-    files: ["**/*.js", "**/*.jsx"],
+    files: ["**/*.js"],
     languageOptions: {
-      globals: { 
-        ...globals.browser, 
-        ...globals.node,
-        React: "readonly",
-        ReactDOM: "readonly"
-      },
+      globals: { ...globals.browser, ...globals.node },
       parserOptions: {
-        ecmaVersion: "latest",
-        sourceType: "module",
         ecmaFeatures: {
           jsx: true,
         },
