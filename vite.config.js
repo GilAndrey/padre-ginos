@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import { tanStackRouterVite } from "@tanstack/router/vite";
+import { TanStackRouterVite } from "@tanstack/router-vite-plugin";
 
 export default defineConfig({
   server: {
@@ -15,5 +15,5 @@ export default defineConfig({
       },
     },
   },
-  plugins: [tanStackRouterVite(), react()],
+  plugins: [TanStackRouterVite(), react()],
 });
