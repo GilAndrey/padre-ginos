@@ -39,7 +39,7 @@ function Order() {
   if (!loading) {
     selectedPizza = pizzaTypes.find((pizza) => pizzaType === pizza.id);
     price = intl.format(
-      selectedPizza.sizes ? selectedPizza.sizes[pizzaSize] : "",
+      selectedPizza.sizes ? selectedPizza.sizes[pizzaSize] : ""
     );
   }
 
