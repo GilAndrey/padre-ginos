@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, Suspense, use } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { createLazyFileRoute } from "@tanstack/react-router";
-import getPastOrders from "../api/getPastOders";
+import getPastOrders from "../api/getPastOrders";
 import getPastOrder from "../api/getPastOrder";
 import Modal from "../Modal";
 import { priceConverter } from "../userCurrency";
@@ -12,21 +12,31 @@ export const Route = createLazyFileRoute("/past")({
 });
 
 function ErrorBoundaryWrappedPastOrderRoutes(props) {
-    return (
-        <ErrorBoundary>
-            <PastOrdersRoute {...props} />
-        </ErrorBoundary>
-    );
-}
-
-function PastOrdersRoute() {
   const [page, setPage] = useState(1);
-  const [focusedOrder, setFocusedOrder] = useState();
-  const { isLoading, data } = useQuery({
+  const loadedPromise = useQuery({
     queryKey: ["past-orders", page],
     queryFn: () => getPastOrders(page),
     staleTime: 30000,
-  });
+  }).promise;
+
+  return (
+    <ErrorBoundary>
+      <Suspense
+        fallback={
+          <div className="past-orders">
+            <h2>Loading past Order ...</h2>
+          </div>
+        }
+      >
+        <PastOrdersRoute loadedPromise={loadedPromise} page={page} setPage={setPage} {...props} />
+      </Suspense>
+    </ErrorBoundary>
+  );
+}
+
+function PastOrdersRoute({ page, setPage, loadedPromise }) {
+  const data = use(loadedPromise);
+  const [focusedOrder, setFocusedOrder] = useState();
 
   const { isLoading: isLoadingPastOrder, data: pastOrderData } = useQuery({
     queryKey: ["past-order", focusedOrder],
@@ -34,15 +44,6 @@ function PastOrdersRoute() {
     staleTime: 86400000,
     enabled: !!focusedOrder,
   });
-
-  if (isLoading) {
-    return (
-      <div className="past-orders">
-        <h2>LOADING...</h2>
-      </div>
-    );
-  }
-  
 
   return (
     <div className="past-orders">
@@ -68,14 +69,16 @@ function PastOrdersRoute() {
           ))}
         </tbody>
       </table>
+
       <div className="pages">
         <button disabled={page <= 1} onClick={() => setPage(page - 1)}>
           Previous
         </button>
-        <button disabled={data.length < 10} onClick={() => setPage(page + 1)}>
+        <button disabled={(Array.isArray(data) ? data.length : 0) < 10} onClick={() => setPage(page + 1)}>
           Next
         </button>
       </div>
+
       {focusedOrder ? (
         <Modal>
           <h2>Order #{focusedOrder}</h2>
